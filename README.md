@@ -10,12 +10,21 @@ Use this script to set up a synthetic monitor that:
 
 
 ## objective
-Consumption-based pricing has motivated customers analyze NR1 data ingest and identify opportunities to optimize. It is now more important than ever to understand in which direction consumption is trending and why.
+Consumption-based pricing has motivated New Relic users to analyze data ingest more closely and identify opportunities to optimize; i.e., help me understand:
+> What are we sending?<br>
+> Is it valuable?<br>
+> Are we sending more this month than we did last month?
 
-Due to the 8-day default retention for event data, our users’ ability to (analyze) ingest over periods longer than that is limited. For customers sending large volumes of a particular event, even querying the last 8 days may not be possible.
+Due to the 8-day default retention for event data, our users’ ability to understand ingest over periods longer than that is limited. For customers sending large volumes of a particular event, even querying the last 8 days may not be possible.
 
 This script can be configured as a synthetic monitor to periodically query ingest and post it as a custom metric for longer storage, and thus, long-term querying and analysis.
 
+Originally developed for MercadoLibre, a live instance of this script is querying and pushing `newrelic.ingest` metrics to `Demotron V2`. You can query this data by setting `metricName`=`'newrelic.ingest'`.
+
+![image](https://user-images.githubusercontent.com/68360819/148800863-e10d8c8f-aeee-43bc-82bb-790a4131b98b.png)
+
+
+The synthetic monitor itself is set up in the `New Relic TSS` account (RPM 1336182) under the name `ingestMetric- Demotron V2`.
 
 ## steps
   1. _Required_ - Update the `QUERYKEY`, `INSERTAPIKEY`, and `ACCOUNTID` variables
@@ -40,19 +49,19 @@ Once you have updated the script according to your needs, create the monitor as 
 **Note**: The Period you configure when setting up the script should match the value you set in the script’s `HOURS` variable - i.e., if the script is set to query ingest for the past hour (i.e., `HOURS` = 1), the script should run every hour so that the results also correspond to ingestion for the past hour.
 
 ## including custom events
-If you want to include any custom event(s) in your data ingestion metric, you will need to incorporate the following into the script:
-Within the `STATEMENTS` multi-dimensional array, add an additional array that includes 2 elements (delimited by commas):
-A query that returns data ingestion estimate for each custom event.
-A label for the `ingestType`
+You can also update the script to include any custom event(s) in your data ingestion metric. Within the `STATEMENTS` multi-dimensional array, add an additional array that includes 2 elements (delimited by commas):
+  1. A query that returns data ingestion estimate for each custom event
+  2. A label for the `ingestType`
 
-For example:<br>
+For example:
 ``"SELECT bytecountestimate()/10e8 FROM “Purchase” SINCE “ + HOURS + “ hours ago LIMIT MAX”, “Custom Events”``
 
-Optional - If you want to facet on the custom event(s) as well, add this as the last element in the array and  define within the list of VARIABLES that third variable for the custom event’s faceted attribute (e.g., var `FACET_CUSTOMEVENTS` = `'payment.processor’`).
+_Optional_ - If you want to facet on the custom event(s) as well, add this as the last element in the array and  define within the list of `VARIABLES` that third variable for the custom event’s faceted attribute (e.g., var `FACET_CUSTOMEVENTS` = `'payment.processor’`).
 
 For example:<br>
 ``"SELECT bytecountestimate()/10e8 FROM “Purchase” SINCE “ + HOURS + “ hours ago LIMIT MAX”, “Custom Events”, FACET_CUSTOMEVENTS``
 
 
 ## thank u
-
+Andrew Lozoya for providing the original script to publish a custom event to the Event API<br>
+Sam Chung for your troubleshooting genius
