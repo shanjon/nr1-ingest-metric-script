@@ -1,34 +1,48 @@
-// Script determines and reports bytecountestimate by appName for each 1-hour period
 var $http = require('request')
 var assert = require('assert')
 var Q = require('q')
 
 //  EDIT THESE VARIABLES TO MEET YOUR NEEDS
-var HOURS = 1 // Hours
-var QUERYKEY = 'NRIQ-s2XuzMcBo6FP6u1CsPNN3f50LjyRi3LO'
-var INSERTAPIKEY = '0c68ed1c1990c38fd55ede5fe96da0fc83bad06f'
-var ACCOUNTID = '1336182'
-var FACETATTRIBUTE = 'appName'
+var HOURS = 1
+var QUERYKEY = 'NRIQ-XXXXXXXXXXXXXX'
+var INSERTAPIKEY = 'NRII-XXXXXXXXXXXXXXXXX'
+var ACCOUNTID = 'XXXXXXX'
+var FACET_APM = 'appName'
+var FACET_METRICS = 'appName'
+var FACET_BROWSER = 'appName'
+var FACET_TRACING = 'appName'
+var FACET_INFRA_PROCESSES = 'hostname'
+var FACET_LOGGING = 'labels.app'
+var FACET_INFRA_HOSTS = 'hostname'
+var FACET_PIXIE = 'k8s.cluster.name'
+var FACET_NETWORK = 'instrumentation.name'
+var FACET_MOBILE = 'appName'
 
-// Multi-dimensional array [NRQL, TYPE] comma-delimited
+// Multi-dimensional array [NRQL, TYPE, FACET_OBJECT] comma-delimited
 var STATEMENTS = [
-  ['SELECT bytecountestimate()/10e8 FROM `Transaction`, `TransactionError` FACET ' + FACETATTRIBUTE + ' SINCE ' + HOURS + ' hours ago LIMIT MAX', 'APM Events'],
-  ['SELECT bytecountestimate()/10e8 FROM `Metric` WHERE instrumentation.provider != `kentik` AND instrumentation.provider != `pixie` FACET ' + FACETATTRIBUTE + ' SINCE ' + HOURS + ' hours ago LIMIT MAX', 'Metrics'],
-  ['SELECT bytecountestimate()/10e8 FROM `PageAction`, `JavaScriptError`, `PageView`, `AjaxRequest`, `PageViewTiming`, `BrowserInteraction`, `BrowserTiming`, `Ajax` FACET ' + FACETATTRIBUTE + ' SINCE ' + HOURS + ' hours ago LIMIT MAX', 'Browser'],
-  ['SELECT bytecountestimate()/10e8 FROM `Span`, `ErrorTrace`, `SqlTrace` WHERE instrumentation.provider != `pixie` FACET ' + FACETATTRIBUTE + ' SINCE ' + HOURS + ' hours ago LIMIT MAX', 'Tracing']
+  ["SELECT bytecountestimate()/10e8 FROM Transaction, TransactionError FACET " + FACET_APM + " SINCE " + HOURS + " hours ago LIMIT MAX", "APM Events", FACET_APM],
+  ["SELECT bytecountestimate()/10e8 FROM Metric WHERE instrumentation.provider != 'kentik' AND instrumentation.provider != 'pixie' FACET " + FACET_METRICS + " SINCE " + HOURS + " hours ago LIMIT MAX", "Metrics", FACET_METRICS],
+  ["SELECT bytecountestimate()/10e8 FROM PageAction, JavaScriptError, PageView, AjaxRequest, PageViewTiming, BrowserInteraction, BrowserTiming, Ajax FACET " + FACET_BROWSER + " SINCE " + HOURS + " hours ago LIMIT MAX", "Browser Events", FACET_BROWSER],
+  ["SELECT bytecountestimate()/10e8 FROM Span, ErrorTrace, SqlTrace WHERE instrumentation.provider != 'pixie' FACET " + FACET_TRACING + " SINCE " + HOURS + " hours ago LIMIT MAX", "Tracing", FACET_TRACING],
+  ["SELECT bytecountestimate()/10e8 FROM ProcessSample FACET " + FACET_INFRA_PROCESSES + " SINCE " + HOURS + " hours ago LIMIT MAX", "Infrastructure Processes", FACET_INFRA_PROCESSES],
+  ["SELECT bytecountestimate()/10e8 FROM Log, LogExtendedRecord WHERE instrumentation.provider != 'kentik' FACET " + FACET_LOGGING + " SINCE " + HOURS + " hours ago LIMIT MAX", "Logging", FACET_LOGGING],
+  ["SELECT bytecountestimate()/10e8 FROM SystemSample, NetworkSample, StorageSample FACET " + FACET_INFRA_HOSTS + " SINCE " + HOURS + " hours ago LIMIT MAX", "Infrastructure Hosts", FACET_INFRA_HOSTS],
+  ["SELECT bytecountestimate()/10e8 FROM Metric, Span WHERE instrumentation.provider = 'pixie' FACET " + FACET_PIXIE + " SINCE " + HOURS + " hours ago LIMIT MAX", "Pixie", FACET_PIXIE],
+  ["SELECT bytecountestimate()/10e8 FROM Metric, KFlow, Log WHERE instrumentation.provider = 'kentik' FACET " + FACET_NETWORK + " SINCE " + HOURS + " hours ago LIMIT MAX", "Network Monitoring", FACET_NETWORK],
+  ["SELECT bytecountestimate()/10e8 FROM Mobile, MobileActivityTrace, MobileBreadcrumb, MobileCrash, MobileHandledException, MobileRequest, MobileRequestError, MobileSession, MobileUserAction FACET " + FACET_MOBILE + " SINCE " + HOURS + " hours ago LIMIT MAX", "Mobile Events", FACET_MOBILE]
 ]
-//  END OF VARIABLES TO EDIT
 
 // Q.spawn() is not required but runs a generator function that automatically handles promise rejections on uncaught errors
 Q.spawn(function * () {
   for (var index in STATEMENTS) {
     var NRQL = STATEMENTS[index][0]
     var TYPE = STATEMENTS[index][1]
-    call(NRQL, TYPE)
+    var FACET_OBJECT = STATEMENTS[index][2]
+    call(NRQL, TYPE, FACET_OBJECT)
   }
 })
 
-function call (NRQL, TYPE) {
+function call (NRQL, TYPE, FACET_OBJECT) {
   // Reset array for each event
   var JSONARR = []
 
@@ -44,12 +58,12 @@ function call (NRQL, TYPE) {
     body.facets.forEach(function (bytecountestimate) {
       JSONARR.push({
         'metrics': [{
-          'name': 'ingestMetric', // e.g., bytesEstimate
+          'name': 'newrelic.ingest', // name of metric
           'type': 'gauge', // must be count, gauge, or summary
           'value': bytecountestimate.results[0].result, // checking for outcome
           'timestamp': Date.now(),
           'attributes': {
-            'appName': bytecountestimate.name, // name of faceted object (e.g., appName)
+            [FACET_OBJECT]: bytecountestimate.name, // name of faceted object for each NRQL statement (e.g., appName)
             'ingestType': TYPE,
           }
         }]
@@ -70,7 +84,7 @@ function call (NRQL, TYPE) {
         headers: {
           'Content-Type': 'application/json',
           'Api-Key': INSERTAPIKEY,
-          'Content-Encoding': 'Identity' // changed from 'gzip, deflate'
+          'Content-Encoding': 'Identity'
         },
         body: JSONARR
       }
