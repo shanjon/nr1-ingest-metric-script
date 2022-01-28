@@ -64,7 +64,8 @@ For example:<br>
 
 ## dashboard
 A dashboard for the custom metric is available in `dashboard.json`
-![image](https://user-images.githubusercontent.com/68360819/151472529-24d0bbc0-8fb7-41cf-9c60-292fcc06db29.png)
+![ingest-infrahosts](https://user-images.githubusercontent.com/68360819/151472717-39152e08-c9f3-4cf9-9517-a63b73a6643d.png)
+
 
 
 ## thank u
