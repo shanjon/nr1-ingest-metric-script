@@ -62,6 +62,11 @@ For example:<br>
 ``"SELECT bytecountestimate()/10e8 FROM “Purchase” SINCE “ + HOURS + “ hours ago LIMIT MAX”, “Custom Events”, FACET_CUSTOMEVENTS``
 
 
+## dashboard
+A dashboard for the custom metric is available in `dashboard.json`
+![image](https://user-images.githubusercontent.com/68360819/151472529-24d0bbc0-8fb7-41cf-9c60-292fcc06db29.png)
+
+
 ## thank u
 Andrew Lozoya for providing the original script to publish a custom event to the Event API<br>
 Sam Chung for your troubleshooting genius
