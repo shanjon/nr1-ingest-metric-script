@@ -26,7 +26,7 @@ Originally developed for MercadoLibre, a live instance of this script is queryin
 
 The synthetic monitor itself is set up in the `New Relic TSS` account (RPM 1336182) under the name `ingestMetric- Demotron V2`.
 
-## steps
+## how to use
   1. _Required_ - Update the `QUERYKEY`, `INSERTAPIKEY`, and `ACCOUNTID` variables
   2. _Optional_ - Update the `HOURS` variable to set the time interval for the query (i.e., do you want to capture data ingestion for the past 1, 24, 168 hours?) - by default, this is set to 1
   3. _Optional_ - Update the faceted attribute used for each query (i.e., `FACET_METRICS`, `FACET_BROWSER`, `FACET_TRACING`, etc.). - by default, the value for `APM Events`, `Metrics`, `Browser Events`, `Tracing`, and `Mobile Events` is `appName`, for `Infrastructure Processes` and `Infrastructure Hosts` is `hostname`, for `Logging` is `labels.app`, for `Pixie` is `k8s.cluster.name`, and for `Networking Monitoring` is `instrumentation.name`
@@ -71,3 +71,31 @@ A dashboard for the custom metric is available in `dashboard.json`
 ## thank u
 Andrew Lozoya for providing the original script to publish a custom event to the Event API<br>
 Sam Chung for your troubleshooting genius
+
+
+---
+
+# Open source license
+This project is distributed under the Apache 2 license.
+
+# Support
+New Relic has open-sourced this project. This project is provided AS-IS WITHOUT WARRANTY OR DEDICATED SUPPORT. Issues and contributions should be reported to the project here on GitHub.
+
+We encourage you to bring your experiences and questions to the Explorers Hub where our community members collaborate on solutions and new ideas.
+
+## Community
+Work with the Explorer's Hub team to create a tag for your app, then update the link below.
+
+New Relic hosts and moderates an online forum where customers can interact with New Relic employees as well as other customers to get help and share best practices. Like all official New Relic open source projects, there's a related Community topic in the New Relic Explorers Hub. You can find this project's topic/threads here:
+
+https://discuss.newrelic.com/t/{{ APP_NAME }} (Note: This URL is subject to change before GA)
+
+## Issues / enhancement requests
+Issues and enhancement requests can be submitted in the Issues tab of this repository. Please search for and review the existing open issues before submitting a new issue.
+
+# Contributing
+Work with the Open Source Office to update the email alias below.
+
+Contributions are encouraged! If you submit an enhancement request, we'll invite you to contribute the change yourself. Please review our Contributors Guide.
+
+Keep in mind that when you submit your pull request, you'll need to sign the CLA via the click-through using CLA-Assistant. If you'd like to execute our corporate CLA, or if you have any questions, please drop us an email at opensource+{{ APP_NAME }}@newrelic.com.
