@@ -88,7 +88,7 @@ Work with the Explorer's Hub team to create a tag for your app, then update the 
 
 New Relic hosts and moderates an online forum where customers can interact with New Relic employees as well as other customers to get help and share best practices. Like all official New Relic open source projects, there's a related Community topic in the New Relic Explorers Hub. You can find this project's topic/threads here:
 
-https://discuss.newrelic.com/t/{{ APP_NAME }} (Note: This URL is subject to change before GA)
+https://discuss.newrelic.com/t/quickstart-ingest-metric-script/179865
 
 ### issues / enhancement requests
 Issues and enhancement requests can be submitted in the Issues tab of this repository. Please search for and review the existing open issues before submitting a new issue.
