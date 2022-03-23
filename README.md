@@ -1,3 +1,5 @@
+[![New Relic Experimental header](https://github.com/newrelic/opensource-website/raw/master/src/images/categories/Experimental.png)](https://opensource.newrelic.com/oss-category/#new-relic-experimental)
+
 # nr1-ingest-metric-script  <br>
 create custom metric via synthetic script to capture New Relic One ingest
 
@@ -23,8 +25,6 @@ Originally developed for MercadoLibre, a live instance of this script is queryin
 
 ![image](https://user-images.githubusercontent.com/68360819/148800863-e10d8c8f-aeee-43bc-82bb-790a4131b98b.png)
 
-
-The synthetic monitor itself is set up in the `New Relic TSS` account (RPM 1336182) under the name `ingestMetric- Demotron V2`.
 
 ## how to use
   1. _Required_ - Update the `QUERYKEY`, `INSERTAPIKEY`, and `ACCOUNTID` variables
@@ -75,27 +75,24 @@ Sam Chung for your troubleshooting genius
 
 ---
 
-## open source license
-This project is distributed under the Apache 2 license.
-
 ## support
-New Relic has open-sourced this project. This project is provided AS-IS WITHOUT WARRANTY OR DEDICATED SUPPORT. Issues and contributions should be reported to the project here on GitHub.
-
-We encourage you to bring your experiences and questions to the Explorers Hub where our community members collaborate on solutions and new ideas.
-
-### community
-Work with the Explorer's Hub team to create a tag for your app, then update the link below.
-
 New Relic hosts and moderates an online forum where customers can interact with New Relic employees as well as other customers to get help and share best practices. Like all official New Relic open source projects, there's a related Community topic in the New Relic Explorers Hub. You can find this project's topic/threads here:
 
-https://discuss.newrelic.com/t/quickstart-ingest-metric-script/179865
+>https://discuss.newrelic.com/t/quickstart-ingest-metric-script/179865
 
 ### issues / enhancement requests
 Issues and enhancement requests can be submitted in the Issues tab of this repository. Please search for and review the existing open issues before submitting a new issue.
 
 ## contributing
-Work with the Open Source Office to update the email alias below.
+We encourage your contributions to improve nr1-ingest-metric-script! Keep in mind when you submit your pull request, you'll need to sign the CLA via the click-through using CLA-Assistant. You only have to sign the CLA one time per project.
+If you have any questions, or to execute our corporate CLA, required if your contribution is on behalf of a company,  please drop us an email at opensource@newrelic.com.
 
-Contributions are encouraged! If you submit an enhancement request, we'll invite you to contribute the change yourself. Please review our Contributors Guide.
+**A note about vulnerabilities**
 
-Keep in mind that when you submit your pull request, you'll need to sign the CLA via the click-through using CLA-Assistant. If you'd like to execute our corporate CLA, or if you have any questions, please drop us an email at opensource+{{ APP_NAME }}@newrelic.com.
+As noted in our [security policy](../../security/policy), New Relic is committed to the privacy and security of our customers and their data. We believe that providing coordinated disclosure by security researchers and engaging with the security community are important means to achieve our security goals.
+
+If you believe you have found a security vulnerability in this project or any of New Relic's products or websites, we welcome and greatly appreciate you reporting it to New Relic through [HackerOne](https://hackerone.com/newrelic).
+
+## license
+[Project Name] is licensed under the [Apache 2.0](http://apache.org/licenses/LICENSE-2.0.txt) License.
+>[If applicable: The [project name] also uses source code from third-party libraries. You can find full details on which libraries are used and the terms under which they are licensed in the third-party notices document.]
