@@ -26,7 +26,7 @@ Originally developed for MercadoLibre, a live instance of this script is queryin
 ![image](https://user-images.githubusercontent.com/68360819/148800863-e10d8c8f-aeee-43bc-82bb-790a4131b98b.png)
 
 
-## how to use
+## getting started
   1. _Required_ - Update the `QUERYKEY`, `INSERTAPIKEY`, and `ACCOUNTID` variables
   2. _Optional_ - Update the `HOURS` variable to set the time interval for the query (i.e., do you want to capture data ingestion for the past 1, 24, 168 hours?) - by default, this is set to 1
   3. _Optional_ - Update the faceted attribute used for each query (i.e., `FACET_METRICS`, `FACET_BROWSER`, `FACET_TRACING`, etc.). - by default, the value for `APM Events`, `Metrics`, `Browser Events`, `Tracing`, and `Mobile Events` is `appName`, for `Infrastructure Processes` and `Infrastructure Hosts` is `hostname`, for `Logging` is `labels.app`, for `Pixie` is `k8s.cluster.name`, and for `Networking Monitoring` is `instrumentation.name`
@@ -35,7 +35,7 @@ Originally developed for MercadoLibre, a live instance of this script is queryin
 **Note**: You do not need to remove the queries for data types not present in the account - if the query returns an empty array, it will skip to the next query without printing the prior empty result.
 
 
-## creating the monitor
+## installation
 Once you have updated the script according to your needs, create the monitor as follows:
   1. Select Endpoint availability (Scripted API)
   2. Name your monitor and configure the Period
